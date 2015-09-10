@@ -1,6 +1,6 @@
 
 -module(fhandle).
-
+-compile(export_all).
 loadfile(FileName)->
 	{ok, Data} = file:read_file(FileName),
     binary:split(Data, [<<"\n">>], [global]).
@@ -16,7 +16,11 @@ loadNumbers(Array,Numbers,Index,CurrSize,Size) ->
 
 	true -> 
 		[Num|RNumbers] = Numbers,
-		two_dim:set(Index,CurrSize,Num,Array),
+		NArray = two_dim:set(Index,CurrSize,Num,Array),
+		loadNumbers(NArray,RNumbers,Index,CurrSize+1,Size);
+
+	false -> Array
+	end.	 
 
 
 loadLines(Array,Lines,CurrSize,Size) ->
@@ -26,16 +30,16 @@ loadLines(Array,Lines,CurrSize,Size) ->
 	true -> 
 		[Line|RLines]=Lines,
 		Numbers = getNumbers(Line),
-		loadNumbers(Array,Numbers,CurrSize,0,Size),
-		loadLines(Array,RLines,CurrSize+1,Size);
+		NArray = loadNumbers(Array,Numbers,CurrSize,0,Size),
+		loadLines(NArray,RLines,CurrSize+1,Size);
 
-	false -> 1=1
+	false -> Array
 
 	end. 
 
 
 loadArray(Array,FileName,Size)->
-	TLines = fhanlde:loadfile(FileName),
+	TLines = loadfile(FileName),
 	[_|Lines] = TLines,
-	loadLines(Array,Lines,0,Size),
-
+	NArray = loadLines(Array,Lines,0,Size),
+	NArray=NArray.
