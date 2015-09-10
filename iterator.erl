@@ -16,7 +16,7 @@
 
 				true -> ok;
 
-				false -> io:format(" X: ~p Y: ~p Val: ~p \n",[X,Y,CurrItem])
+				false -> ok %io:format(" X: ~p Y: ~p Val: ~p \n",[X,Y,CurrItem])
 
 			end,
 
@@ -65,6 +65,26 @@
 			false-> gen_server:call(whereis(consumer),{push,Max,List})
 			end,
 
+			%check above
+
+			case Y-1 >=0 of
+			true->
+
+				AboveItem = two_dim:get(X,Y-1,Array),
+				case CurrItem > AboveItem of
+
+					true -> 
+					Pid3 = spawn(iterator, itr, [Array,Size]),
+					Pid3 ! {X,Y-1,Max+1,List++[AboveItem]};
+
+					false -> 
+
+						gen_server:call(whereis(consumer),{push,Max,List})
+
+				end;		
+
+			false-> gen_server:call(whereis(consumer),{push,Max,List})
+			end,
 
 			%check below
 
@@ -75,8 +95,8 @@
 				case CurrItem > BelowItem of
 
 					true -> 
-					Pid3 = spawn(iterator, itr, [Array,Size]),
-					Pid3 ! {X,Y+1,Max+1,List++[BelowItem]};
+					Pid4 = spawn(iterator, itr, [Array,Size]),
+					Pid4 ! {X,Y+1,Max+1,List++[BelowItem]};
 
 					false -> 
 
@@ -86,6 +106,7 @@
 
 			false-> gen_server:call(whereis(consumer),{push,Max,List})
 			end;
+
 
 
 

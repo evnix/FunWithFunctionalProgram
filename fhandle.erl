@@ -38,8 +38,13 @@ loadLines(Array,Lines,CurrSize,Size) ->
 	end. 
 
 
-loadArray(Array,FileName,Size)->
+loadArray(FileName)->
 	TLines = loadfile(FileName),
-	[_|Lines] = TLines,
-	NArray = loadLines(Array,Lines,0,Size),
-	NArray=NArray.
+	[SizeLine|Lines] = TLines,
+	[TSize|_]=getNumbers(SizeLine),
+	NSize=list_to_integer(binary_to_list(TSize)),
+
+	Array = two_dim:create(NSize,NSize),
+
+	NArray = loadLines(Array,Lines,0,NSize),
+	{NSize,NArray}.
