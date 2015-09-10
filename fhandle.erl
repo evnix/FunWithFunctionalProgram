@@ -16,7 +16,7 @@ loadNumbers(Array,Numbers,Index,CurrSize,Size) ->
 
 	true -> 
 		[Num|RNumbers] = Numbers,
-		NArray = two_dim:set(Index,CurrSize,Num,Array),
+		NArray = two_dim:set(Index,CurrSize,list_to_integer(binary_to_list(Num)),Array),
 		loadNumbers(NArray,RNumbers,Index,CurrSize+1,Size);
 
 	false -> Array

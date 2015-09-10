@@ -4,8 +4,8 @@
 -behaviour(gen_server).
 %% Public API
 
-start_link() ->
- gen_server:start_link(?MODULE, [], []).
+start() ->
+  gen_server:start({local, ?MODULE}, ?MODULE, [], []).
 
 stop(Module) ->
   gen_server:call(Module, stop).
@@ -21,11 +21,36 @@ state() ->
 
 %% Server implementation, a.k.a.: callbacks
 
+getHead(List)->
+	
+	case length(List)>0 of
+
+		true -> [R|_]=List,
+				R=R;
+		false -> 0
+	end.			
+
+getTail(List)->
+	
+	case length(List)>0 of
+
+		true -> lists:last(List);
+				
+		false -> 0
+	end.	
+
+
 init([]) ->
 
 	MaxLen = 0,
 	MaxPath = [],
   {ok, {MaxLen,MaxPath}}.
+
+
+  handle_call(get, _From, {MaxLen,MaxPath}) ->
+
+    {reply, {MaxLen,MaxPath},  {MaxLen,MaxPath}};
+
 
   handle_call({push,Len,Path}, _From, {MaxLen,MaxPath}) ->
 
@@ -37,12 +62,12 @@ init([]) ->
   				case Len == MaxLen of 
 
   					true->
-	  					[OPH|_]=MaxPath,
-	  					OPT=lists:last(MaxPath),
+	  					OPH=getHead(MaxPath),
+	  					OPT=getTail(MaxPath),
 	  					ODepth = OPH - OPT,
 
-	  					[NPH|_]=Path,
-	  					NPT=lists:last(Path),
+	  					NPH=getHead(Path),
+	  					NPT=getTail(Path),
 	  					NDepth = NPH - NPT,
 
 	  					case NDepth > ODepth of
@@ -53,7 +78,7 @@ init([]) ->
 
 	  				false->
 
-  					{Len,Path}
+  					{MaxLen,MaxPath}
   				end
 
 
