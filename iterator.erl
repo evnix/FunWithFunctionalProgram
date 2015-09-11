@@ -2,11 +2,11 @@
 -compile(export_all).
 
 
- itr(Array,Size) ->
+ itr(X,Y,Max,List,Array,Size) ->
 
-	receive
+	%receive
 
-		{X,Y,Max,List} ->
+	%	{X,Y,Max,List} ->
 
 			CurrItem = two_dim:get(X,Y,Array),
 
@@ -30,8 +30,9 @@
 				case CurrItem > LeftItem of
 
 					true -> 
-					Pid = spawn(iterator, itr, [Array,Size]),
-					Pid ! {X-1,Y,Max+1,List++[LeftItem]};
+					%Pid = spawn(iterator, itr, [Array,Size]),
+					%Pid ! {X-1,Y,Max+1,List++[LeftItem]};
+					itr(X-1,Y,Max+1,List++[LeftItem],Array,Size);
 
 					false -> 
 
@@ -53,8 +54,9 @@
 				case CurrItem > RightItem of
 
 					true -> 
-					Pid2 = spawn(iterator, itr, [Array,Size]),
-					Pid2 ! {X+1,Y,Max+1,List++[RightItem]};
+					%Pid2 = spawn(iterator, itr, [Array,Size]),
+					%Pid2 ! {X+1,Y,Max+1,List++[RightItem]};
+					itr(X+1,Y,Max+1,List++[RightItem],Array,Size);
 
 					false -> 
 
@@ -74,8 +76,9 @@
 				case CurrItem > AboveItem of
 
 					true -> 
-					Pid3 = spawn(iterator, itr, [Array,Size]),
-					Pid3 ! {X,Y-1,Max+1,List++[AboveItem]};
+					%Pid3 = spawn(iterator, itr, [Array,Size]),
+					%Pid3 ! {X,Y-1,Max+1,List++[AboveItem]};
+					itr(X,Y-1,Max+1,List++[AboveItem],Array,Size);
 
 					false -> 
 
@@ -95,9 +98,9 @@
 				case CurrItem > BelowItem of
 
 					true -> 
-					Pid4 = spawn(iterator, itr, [Array,Size]),
-					Pid4 ! {X,Y+1,Max+1,List++[BelowItem]};
-
+					%Pid4 = spawn(iterator, itr, [Array,Size]),
+					%Pid4 ! {X,Y+1,Max+1,List++[BelowItem]};
+					itr(X,Y+1,Max+1,List++[BelowItem],Array,Size);
 					false -> 
 
 						gen_server:call(whereis(consumer),{push,Max,List})
@@ -105,12 +108,12 @@
 				end;		
 
 			false-> gen_server:call(whereis(consumer),{push,Max,List})
-			end;
+			end.
 
 
 
 
-		_ -> ok
+		%_ -> ok
 
-	end.
+	%end.
 
