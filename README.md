@@ -29,3 +29,13 @@ consumer.erl [server for consuming and discarding resultsets from clients]
 mainp.erl    [acts as the client and initiates all above modules]
 
 ````
+
+Algorithm:
+
+````
+Currently, The algorithm works by recursively going through each element.
+The program can be easily made to work on multiple computers.
+the start2 function can be used to specify which part of the map to work on each computer.
+
+There is also an implementation(commented out) to spawn one process per element.
+````
