@@ -1,7 +1,7 @@
 # FunWithFunctionalProgram
-doing some code for fun during my spare time :)
 
-Note: The program would be coded & solved much faster in imperative languages like Java or C
+
+**Note:** The program is written in Erlang which is a functional programming language, It would be coded & solved much faster in imperative languages like Java or C.
 
 This program uses a client server concept. this means, 
 
