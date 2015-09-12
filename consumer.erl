@@ -54,6 +54,7 @@ init([]) ->
 
   handle_call({push,Len,Path}, _From, {MaxLen,MaxPath}) ->
 
+
   		{NewMaxLen,NewMaxPath} = case Len > MaxLen of
   			true->
   				{Len,Path};
@@ -101,6 +102,42 @@ handle_call(_Request, _From, State) ->
   say("call ~p, ~p, ~p.", [_Request, _From, State]),
   {reply, ok, State}.
 
+
+handle_cast({push,Len,Path}, {MaxLen,MaxPath}) ->
+
+ 
+      {NewMaxLen,NewMaxPath} = case Len > MaxLen of
+        true->
+          {Len,Path};
+        false-> 
+
+          case Len == MaxLen of 
+
+            true->
+              OPH=getHead(MaxPath),
+              OPT=getTail(MaxPath),
+              ODepth = OPH - OPT,
+
+              NPH=getHead(Path),
+              NPT=getTail(Path),
+              NDepth = NPH - NPT,
+
+              case NDepth > ODepth of
+
+                true-> {Len,Path};
+                false-> {MaxLen,MaxPath}
+              end;  
+
+            false->
+
+            {MaxLen,MaxPath}
+          end
+
+
+
+          
+      end,  
+  {noreply,  {NewMaxLen,NewMaxPath}};
 
 handle_cast(_Msg, State) ->
   say("cast ~p, ~p.", [_Msg, State]),

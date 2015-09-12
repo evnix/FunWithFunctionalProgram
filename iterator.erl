@@ -36,11 +36,11 @@
 
 					false -> 
 
-						gen_server:call(whereis(consumer),{push,Max,List})
+						gen_server:cast(whereis(consumer),{push,Max,List})
 
 				end;		
 
-			false-> gen_server:call(whereis(consumer),{push,Max,List})
+			false-> gen_server:cast(whereis(consumer),{push,Max,List})
 			end,
 
 
@@ -60,11 +60,11 @@
 
 					false -> 
 
-						gen_server:call(whereis(consumer),{push,Max,List})
+						gen_server:cast(whereis(consumer),{push,Max,List})
 
 				end;		
 
-			false-> gen_server:call(whereis(consumer),{push,Max,List})
+			false-> gen_server:cast(whereis(consumer),{push,Max,List})
 			end,
 
 			%check above
@@ -82,11 +82,11 @@
 
 					false -> 
 
-						gen_server:call(whereis(consumer),{push,Max,List})
+						gen_server:cast(whereis(consumer),{push,Max,List})
 
 				end;		
 
-			false-> gen_server:call(whereis(consumer),{push,Max,List})
+			false-> gen_server:cast(whereis(consumer),{push,Max,List})
 			end,
 
 			%check below
@@ -103,11 +103,11 @@
 					itr(X,Y+1,Max+1,List++[BelowItem],Array,Size);
 					false -> 
 
-						gen_server:call(whereis(consumer),{push,Max,List})
+						gen_server:cast(whereis(consumer),{push,Max,List})
 
 				end;		
 
-			false-> gen_server:call(whereis(consumer),{push,Max,List})
+			false-> gen_server:cast(whereis(consumer),{push,Max,List})
 			end.
 
 

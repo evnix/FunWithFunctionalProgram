@@ -9,7 +9,7 @@ abc()->
  	{Size,NA}=fhandle:loadArray(<<"map1.txt">>),
  	consumer:start(),
 
- 	loop(0,0,500,500,Size,NA),
+ 	loop(0,0,1000,1000,Size,NA),
 	{ML,MP}=gen_server:call(whereis(consumer),get),
 	io:format("\n ML: ~p MP: ~p",[ML,MP]),
 
@@ -61,10 +61,12 @@ iloop(I,J,JSize,Size,Array)->
 
 	case J < JSize of
 		true ->
-
-			Pid = spawn(iterator, itr, [I,J,1,[two_dim:get(I,J,Array)],Array,Size]),
-			%Pid ! {I,J,1,[two_dim:get(I,J,Array)]},
-			Pid=Pid,
+			%timer:sleep(1),
+			%io:format(" ~p ",[J]),
+			iterator:itr(I,J,1,[two_dim:get(I,J,Array)],Array,Size),
+			%Pid = spawn(iterator, itr, [I,J,1,[two_dim:get(I,J,Array)],Array,Size]),
+			% %Pid ! {I,J,1,[two_dim:get(I,J,Array)]},
+			 %Pid=Pid,
 			iloop(I,J+1,JSize,Size,Array);
 		false ->ok
 	end.		
