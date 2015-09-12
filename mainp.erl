@@ -1,10 +1,10 @@
 
 -module(mainp).
 
--export( [abc/0,abc2/1,loop/6,iloop/5] ).
+-export( [start/0,start2/1,loop/6,iloop/5] ).
 -define(SIZE, 1000).
 
-abc()->
+start()->
 
  	{Size,NA}=fhandle:loadArray(<<"map1.txt">>),
  	consumer:start(),
@@ -16,7 +16,7 @@ abc()->
  	Size=Size.
 
 
-abc2(List)->
+start2(List)->
 
  	{Size,NA}=fhandle:loadArray(<<"map1.txt">>),
  	consumer:start(),
